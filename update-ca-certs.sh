@@ -39,6 +39,8 @@ if [ ! -f "${CERT_FIX_SCRIPT}" ]; then
         mkdir -p ${CERT_FIX_DIR}/usr_share_ca-certificates/
         mkdir -p ${CERT_FIX_DIR}/work-etc_ssl/
         mkdir -p ${CERT_FIX_DIR}/work-usr_share_ca-certificates/
+	mkdir -p ${CERT_FIX_DIR}/work-webos_browser_etc_ssl/
+        mkdir -p ${CERT_FIX_DIR}/work-webos_browser_usr_share_ca-certificates/
 
 	echo "Removing reference to expired LetsEncrypt root CA certificate..."
 
@@ -61,6 +63,8 @@ if [ ! -f "${CERT_FIX_SCRIPT}" ]; then
         echo "mount -t overlay overlay -o lowerdir=/etc/ssl,upperdir=${CERT_FIX_DIR}/etc_ssl,workdir=${CERT_FIX_DIR}/work-etc_ssl /etc/ssl" >> ${CERT_FIX_SCRIPT}
         echo "mount -t overlay overlay -o lowerdir=/usr/share/ca-certificates,upperdir=${CERT_FIX_DIR}/usr_share_ca-certificates,workdir=${CERT_FIX_DIR}/work-usr_share_ca-certificates /usr/share/ca-certificates" >> ${CERT_FIX_SCRIPT}
         echo "update-ca-certificates" >> ${CERT_FIX_SCRIPT}
+	echo "mount -t overlay overlay -o lowerdir=/var/palm/jail/com.webos.app.browser/etc/ssl,upperdir=${CERT_FIX_DIR}/etc_ssl,workdir=${CERT_FIX_DIR}/work-webos_browser_etc_ssl /var/palm/jail/com.webos.app.browser/etc/ssl" >> ${CERT_FIX_SCRIPT}
+        echo "mount -t overlay overlay -o lowerdir=/var/palm/jail/com.webos.app.browser/usr/share/ca-certificates,upperdir=${CERT_FIX_DIR}/usr_share_ca-certificates,workdir=${CERT_FIX_DIR}/work-webos_browser_usr_share_ca-certificates /var/palm/jail/com.webos.app.browser/usr/share/ca-certificates" >> ${CERT_FIX_SCRIPT}
         echo "" >> ${CERT_FIX_SCRIPT}
 
         chmod a+x ${CERT_FIX_SCRIPT}
